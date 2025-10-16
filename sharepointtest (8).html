@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Domino's Order Status Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      padding: 20px;
+      max-width: 400px;
+      margin: auto;
+    }
+    h2 {
+      color: #e31837; /* Domino's red */
+      text-align: center;
+    }
+    ul.status-list {
+      list-style: none;
+      padding: 0;
+    }
+    ul.status-list li {
+      padding: 10px 15px;
+      margin: 8px 0;
+      border-radius: 6px;
+      background: #ddd;
+      font-weight: bold;
+      color: #333;
+      transition: background 0.3s, color 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    ul.status-list li.current {
+      background: #e31837;
+      color: white;
+    }
+    ul.status-list li.completed {
+      background: #4caf50;
+      color: white;
+      text-decoration: line-through;
+    }
+    button {
+      background: #e31837;
+      border: none;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      width: 100%;
+      margin-top: 20px;
+      transition: background 0.3s;
+    }
+    button:disabled {
+      background: #bbb;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <h2>Domino's Order Status Tracker</h2>
+  
+  <ul class="status-list" id="statusList">
+    <li id="status-0" class="current">Ordered</li>
+    <li id="status-1">Preparing</li>
+    <li id="status-2">Baking</li>
+    <li id="status-3">Out for Delivery</li>
+    <li id="status-4">Delivered</li>
+  </ul>
+  
+  <button id="nextBtn">Next Status</button>
+  
+  <script>
+    const statuses = document.querySelectorAll('.status-list li');
+    const nextBtn = document.getElementById('nextBtn');
+    let currentIndex = 0;
+
+    function updateStatuses() {
+      statuses.forEach((li, index) => {
+        li.classList.remove('current', 'completed');
+        if (index < currentIndex) {
+          li.classList.add('completed');
+        } else if (index === currentIndex) {
+          li.classList.add('current');
+        }
+      });
+
+      if (currentIndex >= statuses.length - 1) {
+        nextBtn.disabled = true;
+        nextBtn.textContent = "Order Delivered 🎉";
+      } else {
+        nextBtn.disabled = false;
+        nextBtn.textContent = "Next Status";
+      }
+    }
+
+    nextBtn.addEventListener('click', () => {
+      if (currentIndex < statuses.length - 1) {
+        currentIndex++;
+        updateStatuses();
+      }
+    });
+
+    // Initial call to set UI correctly
+    updateStatuses();
+  </script>
+</body>
+</html>
